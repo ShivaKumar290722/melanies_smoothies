@@ -43,15 +43,17 @@ if ingredients_list:
         else:
             st.error(f"Failed to get data for {fruit_chosen}")
 
-  if name_on_order and ingredients_list:
-    ingredients_string = ' '.join(ingredients_list)
-    
-    # Use current timestamp and default order_filled = FALSE for all inserts
-    my_insert_stmt = f"""
-    INSERT INTO smoothies.public.orders (name_on_order, ingredients, order_ts, order_filled)
-    VALUES ('{name_on_order}', '{ingredients_string}', CURRENT_TIMESTAMP(), FALSE)
-    """
-    
-    if st.button('Submit Order'):
-        session.sql(my_insert_stmt).collect()
-        st.success('Your Smoothie is ordered!', icon="✅")
+    # Prepare the SQL insert statement only if name is provided
+    if name_on_order:
+        my_insert_stmt = f"""
+        INSERT INTO smoothies.public.orders (name_on_order, ingredients, order_ts, order_filled) 
+        VALUES ('{name_on_order}', '{ingredients_string}', CURRENT_TIMESTAMP(), FALSE)
+        """
+
+        time_to_insert = st.button('Submit Order')
+
+        if time_to_insert:
+            session.sql(my_insert_stmt).collect()
+            st.success('Your Smoothie is ordered!', icon="✅")
+    else:
+        st.warning("Please enter a name on your smoothie to submit the order.")
