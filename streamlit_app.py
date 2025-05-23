@@ -23,7 +23,9 @@ pd_df = my_dataframe.to_pandas()
 st.dataframe(pd_df, use_container_width=True)
 
 # User input for choosing the ingredients (list of fruit names)
+
 ingredients_list = st.multiselect('Choose up to 5 ingredients:', pd_df['FRUIT_NAME'].tolist(), max_selections=5)
+#ingredients_list = st.multiselect('Choose up to 5 ingredients:', pd_df['FRUIT_NAME'].tolist(), max_selections=5)
 
 if ingredients_list:
     # Join fruit names into a single string for insertion
