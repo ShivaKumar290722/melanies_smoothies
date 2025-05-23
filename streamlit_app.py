@@ -36,7 +36,9 @@ if ingredients_list:
     INSERT INTO smoothies.public.orders (name_on_order, ingredients) 
     VALUES ('""" + name_on_order + """', '""" + ingredients_string + """')
     """
-
+import requests
+smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
+st.text(smoothiefroot_response)
     # Show the insert statement (optional, for debugging)
     # st.write(my_insert_stmt)
 
