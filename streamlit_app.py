@@ -1,4 +1,4 @@
-# Import python packages
+## Import python packages
 import streamlit as st 
 import pandas as pd
 import requests
@@ -39,10 +39,10 @@ if ingredients_list:
         #st.write('The search value for ', fruit_chosen,' is ', search_on, '.')
 
         st.subheader(fruit_chosen + ' Nutrition Information')
-        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon" + search_on)
+        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/" + search_on)
         sf_df = st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
 
-    st.write(ingredients_string)
+    #st.write(ingredients_string)
 
     # SQL INSERT statement to insert the order details (both ingredients and name)
     my_insert_stmt = """ 
