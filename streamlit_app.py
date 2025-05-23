@@ -26,7 +26,7 @@ st.dataframe(pd_df, use_container_width=True)
 ingredients_list = st.multiselect('Choose up to 5 ingredients:', pd_df['FRUIT_NAME'].tolist(), max_selections=5)
 
 if ingredients_list:
-    # Join fruit names into a single string for insertion
+    # Build the ingredients string with space separation
     ingredients_string = ' '.join(ingredients_list)
     
     for fruit_chosen in ingredients_list:
@@ -38,21 +38,22 @@ if ingredients_list:
         response = requests.get(f"https://my.smoothiefroot.com/api/fruit/{search_on}")
         if response.status_code == 200:
             json_data = response.json()
-            # Normalize if needed
             sf_df = pd.json_normalize(json_data)
             st.dataframe(sf_df, use_container_width=True)
         else:
             st.error(f"Failed to get data for {fruit_chosen}")
 
-    # Only enable submission if name is provided
+    # Prepare the SQL insert statement only if name is provided
     if name_on_order:
+        my_insert_stmt = f"""
+        INSERT INTO smoothies.public.orders (name_on_order, ingredients) 
+        VALUES ('{name_on_order}', '{ingredients_string}')
+        """
+
         time_to_insert = st.button('Submit Order')
 
         if time_to_insert:
-            #session.sql(my_insert_stmt).collect()
+            session.sql(my_insert_stmt).collect()
             st.success('Your Smoothie is ordered!', icon="✅")
-      
     else:
         st.warning("Please enter a name on your smoothie to submit the order.")
-
-
